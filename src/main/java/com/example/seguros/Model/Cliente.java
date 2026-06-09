@@ -30,7 +30,7 @@ public class Cliente {
     private String telefono;
     private String direccion;
 
-    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
     private List<Poliza> polizas;
     
     public Cliente() {}

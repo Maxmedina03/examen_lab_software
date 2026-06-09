@@ -13,7 +13,7 @@ public interface PolizaRepository extends JpaRepository<Poliza, Long> {
 
     Optional<Poliza> findByNumeroPoliza(String numeroPoliza);
 
-    List<Poliza> findByClienteId(Long clienteId);
+    List<Poliza> findByClienteIdCliente(Long clienteId);
 
     List<Poliza> findByTipoPoliza(String tipoPoliza);
 }

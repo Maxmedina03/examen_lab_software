@@ -18,6 +18,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
@@ -45,7 +46,7 @@ public abstract class Poliza {
     @Enumerated(EnumType.STRING)
     @Column(name = "estado_poliza", nullable = false)
     private EstadoPoliza estadoPoliza;
-    @ManyToAny
+    @ManyToOne
     @JoinColumn(name = "id_cliente", nullable = false)
     private Cliente cliente;
     @OneToMany(mappedBy = "poliza", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

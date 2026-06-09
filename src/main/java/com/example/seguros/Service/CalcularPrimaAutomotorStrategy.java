@@ -14,7 +14,7 @@ public class CalcularPrimaAutomotorStrategy implements CalculoPrimaStrategy {
 
     @Override
     public boolean aplicaPara(Poliza poliza) {
-        return poliza.getTipoPoliza() == TipoPoliza.AUTOMOTRIZ;
+        return TipoPoliza.AUTOMOTRIZ.equals(poliza.getTipoPoliza());
     }
 
     @Override

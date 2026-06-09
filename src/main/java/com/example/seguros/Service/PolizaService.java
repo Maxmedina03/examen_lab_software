@@ -24,14 +24,18 @@ public class PolizaService {
         CalculoPrimaStrategy estrategiaAdecuada = estrategiasCalculo.stream()
                 .filter(est -> est.aplicaPara(poliza))
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("No existe una estrategia de calculo para el tipo de poliza"));
-        
-        
-        BigDecimal primaCalculada = estrategiaAdecuada.calcular(poliza);
-        poliza.setPrima(primaCalculada);    
+                .orElseThrow(() -> new IllegalArgumentException("No existe una estrategia de cálculo para este tipo de póliza"));
 
+        // Aplica el Patrón Strategy
+        BigDecimal primaCalculada = estrategiaAdecuada.calcular(poliza);
+        poliza.setPrima(primaCalculada);
+        
+        // Ejecuta validaciones lógicas internas de la entidad
         poliza.calcularPrima();
 
+        return poliza; // Retorna el objeto procesado
+    }
+    public Poliza guardarPoliza(Poliza poliza) {
         return polizaRepository.save(poliza);
     }
 

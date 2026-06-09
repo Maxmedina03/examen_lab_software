@@ -12,7 +12,7 @@ import com.example.seguros.Model.TipoPoliza;
 public class CalculoPrimaHogarStrategy implements CalculoPrimaStrategy{
     @Override
     public boolean aplicaPara(Poliza poliza){
-        return poliza.getTipoPoliza() == TipoPoliza.HOGAR;
+        return TipoPoliza.HOGAR.equals(poliza.getTipoPoliza());
     }
 
     @Override

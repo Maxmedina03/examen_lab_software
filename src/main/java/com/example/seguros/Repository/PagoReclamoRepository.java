@@ -10,5 +10,5 @@ import com.example.seguros.Model.PagoReclamo;
 @Repository
 public interface PagoReclamoRepository extends JpaRepository<PagoReclamo, Long> {
 
-    List<PagoReclamo> findByReclamoId(Long reclamoId);
+    List<PagoReclamo> findByReclamoIdReclamo(Long reclamoId);
 }
