@@ -6,6 +6,9 @@ import java.util.List;
 
 import org.hibernate.annotations.ManyToAny;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -48,9 +51,14 @@ public abstract class Poliza {
     private EstadoPoliza estadoPoliza;
     @ManyToOne
     @JoinColumn(name = "id_cliente", nullable = false)
+    @JsonBackReference
     private Cliente cliente;
-    @OneToMany(mappedBy = "poliza", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_poliza")
+    @JsonManagedReference
     private List<Reclamo> reclamos;
+    @OneToMany(mappedBy = "poliza", cascade = CascadeType.ALL)
+    private List<PagoPoliza> pagosPoliza; 
     
     public abstract void calcularPrima();
 
@@ -136,5 +144,11 @@ public abstract class Poliza {
         this.prima = prima;
     }
 
+    public List<PagoPoliza> getPagosPoliza() {
+        return pagosPoliza;
+    }  
     
+    public void setPagosPoliza(List<PagoPoliza> pagosPoliza) {
+        this.pagosPoliza = pagosPoliza;
+    }
 }

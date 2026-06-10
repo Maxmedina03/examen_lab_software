@@ -14,7 +14,7 @@ public class PolizaHogar extends Poliza {
     @Column(name = "metros_cuadrados", nullable = false)
     private int metrosCuadrados;
     @Column(name = "tiene_alarma", nullable = false)
-    private boolean TieneAlarma;
+    private boolean tieneAlarma;
     
     public PolizaHogar(){
         super();
@@ -43,11 +43,11 @@ public class PolizaHogar extends Poliza {
     }
 
     public boolean isTieneAlarma() {
-        return TieneAlarma;
+        return tieneAlarma;
     }
 
     public void setTieneAlarma(boolean tieneAlarma) {
-        TieneAlarma = tieneAlarma;
+        this.tieneAlarma = tieneAlarma;
     }
 
     

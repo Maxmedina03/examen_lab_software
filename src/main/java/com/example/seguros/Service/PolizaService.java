@@ -35,8 +35,9 @@ public class PolizaService {
 
         return poliza; // Retorna el objeto procesado
     }
-    public Poliza guardarPoliza(Poliza poliza) {
-        return polizaRepository.save(poliza);
+    
+    public <T extends Poliza> List<T> guardarPolizas(List<T> polizas) {
+    return polizaRepository.saveAll(polizas);
     }
 
     public List<Poliza> obtenerTodas(){

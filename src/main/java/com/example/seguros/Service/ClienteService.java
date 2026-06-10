@@ -19,8 +19,8 @@ public class ClienteService {
         this.clienteRepository = clienteRepository;
     }
 
-    public Cliente guardarCliente(Cliente cliente) {
-        return clienteRepository.save(cliente);
+    public List<Cliente> guardarCliente(List<Cliente> cliente) { 
+    return clienteRepository.saveAll(cliente);
     }
 
     public List<Cliente> obtenerTodos(){

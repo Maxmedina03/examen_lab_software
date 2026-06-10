@@ -29,9 +29,9 @@ public class ClienteController {
 
     // 1. Guardar un nuevo cliente (POST http://localhost:8080/api/clientes)
     @PostMapping
-    public ResponseEntity<Cliente> crearCliente(@RequestBody Cliente cliente) {
-        Cliente nuevoCliente = clienteService.guardarCliente(cliente);
-        return new ResponseEntity<>(nuevoCliente, HttpStatus.CREATED); // Devuelve un estado 201 Created
+    public ResponseEntity<List<Cliente>> crearClientes(@RequestBody List<Cliente> clientes) { // 
+        List<Cliente> nuevosClientes = clienteService.guardarCliente(clientes); // 
+        return new ResponseEntity<>(nuevosClientes, HttpStatus.CREATED); // Devuelve el estado 201 con la lista completa
     }
 
     // 2. Obtener la lista de todos los clientes (GET http://localhost:8080/api/clientes)

@@ -2,6 +2,9 @@ package com.example.seguros.Model;
 
 import java.math.BigDecimal;
 
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -13,9 +16,9 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
-    @Entity
-    @Table(name = "pago_metodo_detalles")
-    public class PagoMetodoDetalle {
+@Entity
+@Table(name = "pago_metodo_detalles")
+public class PagoMetodoDetalle {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,9 +34,11 @@ import jakarta.persistence.Table;
 
     @ManyToOne
     @JoinColumn(name = "id_pago", nullable = false)
-    private PagoReclamo pagoReclamo;
+    @JsonIgnoreProperties({ "pagosMetodoDetalle", "reclamo" })
+    private PagoPoliza pagoPoliza;
 
-    public PagoMetodoDetalle() {}
+    public PagoMetodoDetalle() {
+    }
 
     public Long getIdDetalle() {
         return idDetalle;
@@ -59,15 +64,12 @@ import jakarta.persistence.Table;
         this.metodoPago = metodoPago;
     }
 
-    public PagoReclamo getPagoReclamo() {
-        return pagoReclamo;
+    public PagoPoliza getPagoPoliza() {
+        return pagoPoliza;
     }
 
-    public void setPagoReclamo(PagoReclamo pagoReclamo) {
-        this.pagoReclamo = pagoReclamo;
+    public void setPagoPoliza(PagoPoliza pagoPoliza) {
+        this.pagoPoliza = pagoPoliza;
     }
-
-   
 
 }
-

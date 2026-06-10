@@ -3,6 +3,8 @@ package com.example.seguros.Model;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -24,22 +26,28 @@ public class Reclamo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_reclamo")
     private Long idReclamo;
+
     @Column(name = "fecha_siniestro", nullable = false)
     private LocalDate fechaSiniestro;
+
     @Column(name = "fecha_reclamo", nullable = false)
     private LocalDate fechaReclamo;
+
     @Column(name = "descripcion_hechos", columnDefinition = "TEXT")
     private String descripcionHechos;
+
     @Column(name = "monto_reclamado", nullable = false)
     private double montoReclamado;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "estado_reclamo", nullable = false)
     private EstadoReclamo estadoReclamo;
+
     @ManyToOne
-    @JoinColumn(name = "id_poliza", nullable = false    )
+    @JoinColumn(name = "id_poliza", nullable = false)
+    @JsonBackReference
     private Poliza poliza;
-    @OneToMany(mappedBy = "reclamo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<PagoReclamo> pagosReclamos;
+
 
     public Reclamo() {}
 
@@ -75,6 +83,14 @@ public class Reclamo {
         this.descripcionHechos = descripcionHechos;
     }
 
+    public double getMontoReclamado() {
+        return montoReclamado;
+    }
+
+    public void setMontoReclamado(double montoReclamado) {
+        this.montoReclamado = montoReclamado;
+    }
+
     public EstadoReclamo getEstadoReclamo() {
         return estadoReclamo;
     }
@@ -90,23 +106,5 @@ public class Reclamo {
     public void setPoliza(Poliza poliza) {
         this.poliza = poliza;
     }
-
-    public List<PagoReclamo> getPagosReclamo() {
-        return pagosReclamos;
-    }
-
-    public void setPagosReclamo(List<PagoReclamo> pagosReclamos) {
-        this.pagosReclamos = pagosReclamos;
-    }
-
-    public double getMontoReclamado() {
-        return montoReclamado;
-    }
-
-    public void setMontoReclamado(double montoReclamado) {
-        this.montoReclamado = montoReclamado;
-    }
-
     
-
 }

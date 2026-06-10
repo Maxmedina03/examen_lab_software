@@ -26,7 +26,7 @@ public class PolizaAutomotor extends Poliza {
 
     @Override
     public void calcularPrima() {
-
+        
     }
 
     public String getPatente() {
