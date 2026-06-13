@@ -2,7 +2,6 @@ package com.example.seguros.DTO;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.List;
 
 import com.example.seguros.Model.MetodoPago;
 
@@ -13,7 +12,7 @@ public class PagoPolizaRequest implements java.io.Serializable {
     private BigDecimal monto;
     private Long idPoliza;
     
-    private MetodoPago metodoPago; // Recibes ["TARJETA", "TRANSFERENCIA"]
+    private MetodoPago metodoPago; 
     public Long getIdPago() {
         return idPago;
     }

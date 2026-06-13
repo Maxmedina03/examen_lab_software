@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seguros Argentum</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <header>
+        <div class="logo-name">Seguros Argentum</div>
+    </header>
+
+    <div class="wrapper">
+        <div class="login-container">
+            <h2>Crear Cuenta</h2>
+            <form action="/auth/registrar" method="POST">
+                <input type="text" name="nombre" placeholder="Nombre" required>
+                <input type="text" name="apellido" placeholder="Apellido" required>
+                <input type="text" name="dniCuit" placeholder="DNI o CUIT" required>
+                <input type="tel" name="telefono" placeholder="Teléfono" required>
+                <input type="text" name="direccion" placeholder="Dirección" required>
+                <input type="email" name="email" placeholder="Correo electrónico" required>
+                <input type="password" name="contraseña" placeholder="Contraseña" required>
+                <button type="submit">Registrarse</button>
+
+                <div class="form-footer">
+                    <a href="login.html">¿Ya tienes cuenta? Inicia sesión</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>

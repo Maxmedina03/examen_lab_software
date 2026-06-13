@@ -18,16 +18,13 @@ public class ReclamoService {
     private final ReclamoRepository reclamoRepository;
     private final PolizaRepository polizaRepository;
 
-    // Inyección limpia por constructor
+   
     public ReclamoService(ReclamoRepository reclamoRepository, PolizaRepository polizaRepository) {
         this.reclamoRepository = reclamoRepository;
         this.polizaRepository = polizaRepository;
     }
 
-    /**
-     * Guarda una lista de reclamos en lote de manera transaccional.
-     * Si uno falla, se revierte toda la operación (rollback).
-     */
+   
     @Transactional
     public List<Reclamo> guardarReclamos(List<ReclamoRequest> requests) {
         List<Reclamo> reclamosAGuardar = new java.util.ArrayList<>();
@@ -37,9 +34,7 @@ public class ReclamoService {
         return reclamoRepository.saveAll(reclamosAGuardar);
     }
 
-    /**
-     * Obtiene la lista completa de reclamos registrados.
-     */
+    
     public List<Reclamo> obtenerTodos() {
         return reclamoRepository.findAll();
     }
@@ -48,25 +43,20 @@ public class ReclamoService {
         return reclamoRepository.findByidReclamo(idReclamo);
     }
 
-    /**
-     * Busca reclamos asociados a una póliza específica.
-     */
+  
     public List<Reclamo> obtenerPorPoliza(Long idPoliza) {
         return reclamoRepository.findByPolizaIdPoliza(idPoliza);
     }
 
-    /**
-     * Filtra los reclamos por su estado actual (PENDIENTE, EN_PROCESO, APROBADO,
-     * RECHAZADO).
-     */
+    
     public List<Reclamo> obtenerPorEstado(EstadoReclamo estadoReclamo) {
         return reclamoRepository.findByEstadoReclamo(estadoReclamo);
     }
 
-    // --- UPDATE ---
+   
     @Transactional
     public Reclamo actualizarEstadoReclamo(Long idReclamo, EstadoReclamo nuevoEstado) {
-        // 1. Buscamos y extraemos el objeto real
+       
         Reclamo reclamoExistente = obtenerPorIdReclamo(idReclamo)
                 .orElseThrow(() -> new RuntimeException("Reclamo no encontrado con ID: " + idReclamo));
 
@@ -75,7 +65,7 @@ public class ReclamoService {
         return reclamoRepository.save(reclamoExistente);
     }
 
-    // --- DELETE ---
+   
     public void eliminarReclamo(Long id) {
         if (!reclamoRepository.existsById(id)) {
             throw new RuntimeException("No se puede eliminar: Reclamo no encontrado con ID: " + id);
@@ -83,7 +73,6 @@ public class ReclamoService {
         reclamoRepository.deleteById(id);
     }
 
-    // --- MÉTODOS AUXILIARES (Refactorización para limpieza) ---
     private Reclamo mapToEntity(ReclamoRequest req) {
         Reclamo reclamo = new Reclamo();
         reclamo.setFechaSiniestro(req.getFechaSiniestro());

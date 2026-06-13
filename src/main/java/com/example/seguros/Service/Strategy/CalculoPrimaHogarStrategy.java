@@ -19,10 +19,10 @@ public class CalculoPrimaHogarStrategy implements CalculoPrimaStrategy{
     public BigDecimal calcular(Poliza poliza){
         PolizaHogar hogar = (PolizaHogar) poliza;
 
-        // Base inicial según el tamaño de la propiedad (Metros cuadrados * $50)
+        
         BigDecimal base = new BigDecimal(hogar.getMetrosCuadrados()).multiply(new BigDecimal("50.00"));
         
-        // Lógica de Negocio: Si la casa posee alarma de seguridad activa, se bonifica (-15% de prima)
+        
         if (hogar.isTieneAlarma()) {
             base = base.multiply(new BigDecimal("0.85"));
         }

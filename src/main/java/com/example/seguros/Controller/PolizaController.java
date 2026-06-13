@@ -14,7 +14,7 @@ public class PolizaController {
     
     private final PolizaService polizaService;
 
-    // Volvemos a necesitar solo tu PolizaService original
+    
     public PolizaController(PolizaService polizaService){
         this.polizaService = polizaService;
     }
@@ -32,8 +32,7 @@ public class PolizaController {
                 
                 polizaService.emitirPoliza(auto); 
             }
-            // 2. Guardamos todo el lote completo usando saveAll en el service
-            // (Para esto tu guardarPolizas tiene que aceptar List<Poliza>)
+           
             List<PolizaAutomotor> polizasGuardadas = polizaService.guardarPolizas(polizasAuto);
             
             return new ResponseEntity<>(polizasGuardadas, HttpStatus.CREATED);
@@ -44,10 +43,10 @@ public class PolizaController {
 
   
     @PostMapping("/hogar")
-    public ResponseEntity<?> contratarHogar(@RequestBody List<PolizaHogar> polizasHogar){ // 👈 Cambiado a List<PolizaHogar>
+    public ResponseEntity<?> contratarHogar(@RequestBody List<PolizaHogar> polizasHogar){ 
         try {
            for (PolizaHogar hogar : polizasHogar) {
-                // 1. Validamos que en el JSON venga el cliente con su ID colgado
+               
                 if (hogar.getCliente() == null || hogar.getCliente().getIdCliente() == null) {
                     return ResponseEntity.badRequest().body("Cada póliza debe incluir un objeto cliente con su idCliente.");
                 }
@@ -56,7 +55,7 @@ public class PolizaController {
                 polizaService.emitirPoliza(hogar); 
             }
             
-            // 2. Guardamos todo el lote completo usando saveAll en el service
+            
             List<PolizaHogar> polizasGuardadas = polizaService.guardarPolizas(polizasHogar);
             
             return new ResponseEntity<>(polizasGuardadas, HttpStatus.CREATED);
@@ -65,7 +64,7 @@ public class PolizaController {
         }
     }
     
-    // --- Los métodos GET quedan exactamente igual que antes ---
+   
     @GetMapping
     public ResponseEntity<List<Poliza>> obtenerTodas(){
         return ResponseEntity.ok(polizaService.obtenerTodas());

@@ -18,12 +18,12 @@ public class AdministradorService {
     @Autowired
     private ClienteRepository clienteRepository;
 
-    // Método para obtener todos los administradores
+   
     public List<Administrador> obtenerTodos() {
         return administradorRepository.findAll();
     }
 
-    // Método para registrar un administrador (si fuera necesario)
+    
     public Administrador registrarAdministrador(Administrador admin) {
         if (administradorRepository.findByEmail(admin.getEmail()).isPresent()) {
             throw new IllegalArgumentException("Ya existe un administrador con ese email.");
@@ -31,7 +31,7 @@ public class AdministradorService {
         return administradorRepository.save(admin);
     }
 
-    // Lógica específica: Registro de clientes por parte del Administrador
+    
     public Cliente registrarCliente(Cliente nuevoCliente) {
         if (clienteRepository.findByDniCuit(nuevoCliente.getDniCuit()).isPresent()) {
             throw new IllegalArgumentException("El cliente ya existe en el sistema.");
@@ -56,7 +56,7 @@ public class AdministradorService {
         return administradorRepository.save(adminExistente);
     }
 
-    // --- DELETE ---
+    
     public void eliminarAdministrador(Long id) {
         Administrador administrador = obtenerAdministradorPorId(id);
         administradorRepository.delete(administrador);

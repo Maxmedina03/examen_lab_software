@@ -27,14 +27,14 @@ public class PolizaService {
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("No existe una estrategia de cálculo para este tipo de póliza"));
 
-        // Aplica el Patrón Strategy
+        
         BigDecimal primaCalculada = estrategiaAdecuada.calcular(poliza);
         poliza.setPrima(primaCalculada);
         
-        // Ejecuta validaciones lógicas internas de la entidad
+        
         poliza.calcularPrima();
 
-        return poliza; // Retorna el objeto procesado
+        return poliza; 
     }
     
     

@@ -16,13 +16,13 @@ public class PagoPolizaController {
     private final PagoPolizaService pagoPolizaService;
     
 
-    // Inyección limpia por constructor de tus nuevos repositorios de Póliza
+   
     public PagoPolizaController(PagoPolizaService pagoPolizaService) {
         this.pagoPolizaService = pagoPolizaService;
         
     }
 
-    // 1. Registrar un nuevo pago de póliza (POST http://localhost:8080/api/pagos)
+    
     @PostMapping
     public ResponseEntity<?> registrarPago(@RequestBody PagoPolizaRequest pagoPolizaRequest) {
         try {
@@ -33,21 +33,21 @@ public class PagoPolizaController {
         }
     }
 
-    // 2. Obtener la lista de todos los pagos realizados (GET http://localhost:8080/api/pagos)
+   
     @GetMapping
     public ResponseEntity<List<PagoPoliza>> obtenerTodos() {
         List<PagoPoliza> pagos = pagoPolizaService.obtenerTodos();
         return ResponseEntity.ok(pagos);
     }
 
-    // 3. Buscar pagos asociados a una Póliza específica (GET http://localhost:8080/api/pagos/poliza/{polizaId})
+  
     @GetMapping("/poliza/{polizaId}")
     public ResponseEntity<List<PagoPoliza>> obtenerPorPoliza(@PathVariable Long polizaId) {
         List<PagoPoliza> pagos = pagoPolizaService.obtenerPorPoliza(polizaId);
         return ResponseEntity.ok(pagos);
     }
 
-    // 4. Obtener un pago específico por su ID (GET http://localhost:8080/api/pagos/{id})
+   
     @GetMapping("/{id}")
     public ResponseEntity<PagoPoliza> obtenerPorId(@PathVariable Long id) {
         return pagoPolizaService.obtenerPorId(id)

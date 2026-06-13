@@ -35,7 +35,7 @@ public class ClienteService {
     public Cliente actualizarCliente(String dniCuit, Cliente clienteActualizado) {
         Cliente clienteExistente = obtenerPorDniCuit(dniCuit);
         
-        // Actualizamos los campos necesarios (asumiendo que Cliente tiene estos setters)
+       
         clienteExistente.setNombre(clienteActualizado.getNombre());
         clienteExistente.setApellido(clienteActualizado.getApellido());
         clienteExistente.setContraseña(clienteActualizado.getContraseña());
