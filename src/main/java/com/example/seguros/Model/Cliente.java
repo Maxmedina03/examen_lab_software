@@ -2,12 +2,7 @@ package com.example.seguros.Model;
 
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -16,27 +11,31 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "clientes")
-public class Cliente {
+public class Cliente extends Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_cliente")
     private Long idCliente;
-    @Column(nullable = false)
-    private String nombre;
-    @Column(nullable = false)
-    private String apellido;
-    @Column(name = "dni_cuit", unique = true, nullable = false)
-    private String dnicuit;
-
-    private String email;
-    private String telefono;
-    private String direccion;
-
-    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
-    @JsonManagedReference
-    private List<Poliza> polizas;
     
-    public Cliente() {}
+    @OneToMany(mappedBy = "cliente")
+    private List<Poliza> polizas;
+
+    public Cliente() {
+        super();
+    }
+    
+    public Cliente(String nombre, String apellido, String dniCuit, String email) {
+        this.setNombre(nombre);
+        this.setApellido(apellido);
+        this.setDniCuit(dniCuit);
+        this.setEmail(email);
+    }
+    public List<Poliza> getPolizas() {
+        return polizas;
+    }
+
+    public void setPolizas(List<Poliza> polizas) {
+        this.polizas = polizas;
+    }
 
     public Long getIdCliente() {
         return idCliente;
@@ -46,61 +45,5 @@ public class Cliente {
         this.idCliente = idCliente;
     }
 
-    public String getNombre() {
-        return nombre;
-    }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getApellido() {
-        return apellido;
-    }
-
-    public void setApellido(String apellido) {
-        this.apellido = apellido;
-    }
-
-    public String getDnicuit() {
-        return dnicuit;
-    }
-
-    public void setDnicuit(String dnicuit) {
-        this.dnicuit = dnicuit;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getTelefono() {
-        return telefono;
-    }
-
-    public void setTelefono(String telefono) {
-        this.telefono = telefono;
-    }
-
-    public String getDireccion() {
-        return direccion;
-    }
-
-    public void setDireccion(String direccion) {
-        this.direccion = direccion;
-    }
-
-    public List<Poliza> getPolizas() {
-        return polizas;
-    }
-
-    public void setPolizas(List<Poliza> polizas) {
-        this.polizas = polizas;
-    }
-
-    
 }

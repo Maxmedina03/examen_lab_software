@@ -1,6 +1,7 @@
 package com.example.seguros.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -15,4 +16,5 @@ public interface ReclamoRepository extends JpaRepository<Reclamo, Long> {
 
     List<Reclamo> findByEstadoReclamo(EstadoReclamo estadoReclamo);
 
+    Optional<Reclamo> findByidReclamo(Long IdReclamo);
 }

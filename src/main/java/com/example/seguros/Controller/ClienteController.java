@@ -2,9 +2,9 @@ package com.example.seguros.Controller;
 
 import java.util.List;
 
-import org.apache.coyote.Response;
+
 import org.springframework.http.HttpStatus;
-import org.springframework.http.RequestEntity;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -43,9 +43,9 @@ public class ClienteController {
 
     // 3. Buscar un cliente específico por su DNI (GET http://localhost:8080/api/clientes/buscar/{dni})
     @GetMapping("/buscar/{dni}")
-    public ResponseEntity<Cliente> obtenerPorDni(@PathVariable String dni) {
+    public ResponseEntity<Cliente> obtenerPorDniCuit(@PathVariable String dniCuit) {
         try {
-            Cliente cliente = clienteService.obtenerPorDni(dni);
+            Cliente cliente = clienteService.obtenerPorDniCuit(dniCuit);
             return ResponseEntity.ok(cliente);
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // Devuelve 404 si no existe

@@ -27,8 +27,27 @@ public class ClienteService {
         return clienteRepository.findAll();
     }
 
-    public Cliente obtenerPorDni(String dni){
-        return clienteRepository.findByDnicuit(dni)
-            .orElseThrow(() -> new IllegalArgumentException("Cliente no encontrado con dni: " + dni));
+    public Cliente obtenerPorDniCuit(String dniCuit){
+        return clienteRepository.findByDniCuit(dniCuit)
+            .orElseThrow(() -> new IllegalArgumentException("Cliente no encontrado con dni: " + dniCuit));
     }
-}
+
+    public Cliente actualizarCliente(String dniCuit, Cliente clienteActualizado) {
+        Cliente clienteExistente = obtenerPorDniCuit(dniCuit);
+        
+        // Actualizamos los campos necesarios (asumiendo que Cliente tiene estos setters)
+        clienteExistente.setNombre(clienteActualizado.getNombre());
+        clienteExistente.setApellido(clienteActualizado.getApellido());
+        clienteExistente.setContraseña(clienteActualizado.getContraseña());
+        clienteExistente.setEmail(clienteActualizado.getEmail());
+        clienteExistente.setDireccion(clienteActualizado.getDireccion());
+        clienteExistente.setTelefono(clienteActualizado.getTelefono());
+
+        return clienteRepository.save(clienteExistente);
+    }
+
+    public void eliminarCliente(String dniCuit) {
+        Cliente cliente = obtenerPorDniCuit(dniCuit);
+        clienteRepository.delete(cliente);
+    }
+}    

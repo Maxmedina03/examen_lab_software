@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.seguros.Model.Poliza;
 import com.example.seguros.Repository.PolizaRepository;
+import com.example.seguros.Service.Strategy.CalculoPrimaStrategy;
 
 @Service
 public class PolizaService {
@@ -36,8 +37,9 @@ public class PolizaService {
         return poliza; // Retorna el objeto procesado
     }
     
+    
     public <T extends Poliza> List<T> guardarPolizas(List<T> polizas) {
-    return polizaRepository.saveAll(polizas);
+        return polizaRepository.saveAll(polizas);
     }
 
     public List<Poliza> obtenerTodas(){
@@ -47,6 +49,25 @@ public class PolizaService {
     public Poliza obtenerPorId(Long id){
         return polizaRepository.findById(id)
             .orElseThrow(() -> new IllegalArgumentException("Poliza no encontrada con id: " + id));
+    }
+
+    public Poliza actualizarPoliza(Long id, Poliza polizaActualizada) {
+        Poliza polizaExistente = obtenerPorId(id);
+        
+        
+        polizaExistente.setEstadoPoliza(polizaActualizada.getEstadoPoliza());
+        polizaExistente.setFechaFin(polizaActualizada.getFechaFin());
+        polizaExistente.setCoberturaMaxima(polizaActualizada.getCoberturaMaxima());
+        
+        return polizaRepository.save(polizaExistente);
+    }
+
+    
+    public void eliminarPoliza(Long id) {
+        if (!polizaRepository.existsById(id)) {
+            throw new IllegalArgumentException("No se puede eliminar: Póliza no encontrada.");
+        }
+        polizaRepository.deleteById(id);
     }
 
 }

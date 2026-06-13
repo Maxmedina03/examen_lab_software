@@ -4,7 +4,8 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
-import com.example.seguros.Model.PagoMetodoDetalle;
+import com.example.seguros.Model.MetodoPago;
+
 
 public class PagoPolizaRequest implements java.io.Serializable {
     private Long idPago;
@@ -12,7 +13,7 @@ public class PagoPolizaRequest implements java.io.Serializable {
     private BigDecimal monto;
     private Long idPoliza;
     
-    private List<PagoMetodoDetalle> pagosMetodoDetalle;
+    private MetodoPago metodoPago; // Recibes ["TARJETA", "TRANSFERENCIA"]
     public Long getIdPago() {
         return idPago;
     }
@@ -37,13 +38,13 @@ public class PagoPolizaRequest implements java.io.Serializable {
     public void setIdPoliza(Long idPoliza) {
         this.idPoliza = idPoliza;
     }
-    public List<PagoMetodoDetalle> getPagosMetodoDetalle() {
-        return pagosMetodoDetalle;
+    public MetodoPago getMetodoPago() {
+        return metodoPago;
     }
-    public void setPagosMetodoDetalle(List<PagoMetodoDetalle> pagosMetodoDetalle) {
-        this.pagosMetodoDetalle = pagosMetodoDetalle;
+    public void setMetodoPago(MetodoPago metodoPago) {
+        this.metodoPago = metodoPago;
     }
-
+    
     
 
 }

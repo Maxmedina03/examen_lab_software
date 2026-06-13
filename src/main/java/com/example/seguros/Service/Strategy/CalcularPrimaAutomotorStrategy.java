@@ -1,4 +1,4 @@
-package com.example.seguros.Service;
+package com.example.seguros.Service.Strategy;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

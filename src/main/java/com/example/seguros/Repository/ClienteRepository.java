@@ -10,6 +10,6 @@ import com.example.seguros.Model.Cliente;
 @Repository
 public interface ClienteRepository extends JpaRepository<Cliente, Long> {
 
-    Optional<Cliente> findByDnicuit(String dnicuit);
+    Optional<Cliente> findByDniCuit(String dniCuit);
 
 }

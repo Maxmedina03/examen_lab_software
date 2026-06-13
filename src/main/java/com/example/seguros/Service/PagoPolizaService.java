@@ -31,10 +31,16 @@ public class PagoPolizaService {
             pagoPoliza.setFechaPago(req.getFechaPago());
             pagoPoliza.setMonto(req.getMonto());
 
+            if (req.getMetodoPago() != null) {
+                pagoPoliza.setMetodoPago(req.getMetodoPago());
+            } else {
+                throw new RuntimeException("El método de pago es obligatorio.");
+            }
             if (req.getIdPoliza() != null) {
                 Poliza polizaReal = polizaRepository.findById(req.getIdPoliza())
-                        .orElseThrow(() -> new RuntimeException("No se encontró la póliza con ID: " + req.getIdPoliza()));
-                
+                        .orElseThrow(
+                                () -> new RuntimeException("No se encontró la póliza con ID: " + req.getIdPoliza()));
+
                 pagoPoliza.setPoliza(polizaReal);
             } else {
                 throw new RuntimeException("Cada pago debe incluir un idPoliza válido.");
@@ -54,5 +60,15 @@ public class PagoPolizaService {
 
     public Optional<PagoPoliza> obtenerPorId(Long id) {
         return pagoPolizaRepository.findByIdPago(id);
-    } 
+    }
+
+
+    public void eliminarPago(Long id) {
+        if (!pagoPolizaRepository.existsById(id)) {
+            throw new RuntimeException("No se puede eliminar: Pago no encontrado.");
+        }
+        pagoPolizaRepository.deleteById(id);
+    }
+
+    
 }
