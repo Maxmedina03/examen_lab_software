@@ -49,16 +49,14 @@ public class PolizaService {
     }
 
     public Poliza actualizarPoliza(Long id, Poliza polizaActualizada) {
-        // 1. Buscamos la póliza existente
+        
         Poliza polizaExistente = obtenerPorId(id);
 
-        // 2. Actualizamos todos los campos directamente
         polizaExistente.setFechaInicio(polizaActualizada.getFechaInicio());
         polizaExistente.setFechaFin(polizaActualizada.getFechaFin());
         polizaExistente.setEstadoPoliza(polizaActualizada.getEstadoPoliza());
         polizaExistente.setCoberturaMaxima(polizaActualizada.getCoberturaMaxima());
 
-        // 3. Guardamos los cambios
         return polizaRepository.save(polizaExistente);
     }
 

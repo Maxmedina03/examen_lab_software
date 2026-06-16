@@ -56,7 +56,6 @@ public class ClienteController {
 
    @DeleteMapping("/{dniCuit}")
     public ResponseEntity<Void> eliminarCliente(@PathVariable String dniCuit) {
-        // Llamamos al método que ya tienes en el servicio preparado para DNI
         clienteService.eliminarClientePorDni(dniCuit);
         return ResponseEntity.noContent().build();
     }

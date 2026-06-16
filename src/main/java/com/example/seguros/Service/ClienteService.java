@@ -12,7 +12,7 @@ import com.example.seguros.Repository.ClienteRepository;
 public class ClienteService {
 
     @Autowired
-    private ClienteRepository clienteRepository;
+    private final ClienteRepository clienteRepository;
 
     public ClienteService(ClienteRepository clienteRepository) {
         this.clienteRepository = clienteRepository;

@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.seguros.Model.Administrador;
-import com.example.seguros.Model.Cliente;
 import com.example.seguros.Service.AdministradorService;
 
 @RestController
@@ -19,11 +18,6 @@ public class AdministradorController {
     @Autowired
     private AdministradorService administradorService;
 
-    // Endpoint para registrar CLIENTES (el que ya tenías)
-    @PostMapping("/registrar-cliente")
-    public Cliente registrarCliente(@RequestBody Cliente nuevoCliente) {
-        return administradorService.registrarCliente(nuevoCliente);
-    }
 
     @PostMapping("/registrar-admin")
     public Administrador registrarAdmin(@RequestBody Administrador nuevoAdmin) {
