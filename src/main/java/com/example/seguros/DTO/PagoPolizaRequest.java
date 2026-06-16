@@ -11,8 +11,9 @@ public class PagoPolizaRequest implements java.io.Serializable {
     private LocalDate fechaPago;
     private BigDecimal monto;
     private Long idPoliza;
-    
     private MetodoPago metodoPago; 
+    
+    
     public Long getIdPago() {
         return idPago;
     }
@@ -43,7 +44,6 @@ public class PagoPolizaRequest implements java.io.Serializable {
     public void setMetodoPago(MetodoPago metodoPago) {
         this.metodoPago = metodoPago;
     }
-    
-    
+
 
 }

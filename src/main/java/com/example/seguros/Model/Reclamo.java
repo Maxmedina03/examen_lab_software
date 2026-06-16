@@ -2,21 +2,17 @@ package com.example.seguros.Model;
 
 import java.time.LocalDate;
 
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-
 import jakarta.persistence.Table;
 
 @Entity
@@ -45,7 +41,7 @@ public class Reclamo {
 
     @ManyToOne
     @JoinColumn(name = "id_poliza", nullable = false)
-    @JsonBackReference
+    @JsonIgnoreProperties("reclamos")
     private Poliza poliza;
 
 

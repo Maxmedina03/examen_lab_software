@@ -3,9 +3,16 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestión de Clientes - Seguros Argentum</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        #form-edicion {
+            display: none;
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #ccc;
+        }
+    </style>
 </head>
 
 <body>
@@ -19,9 +26,23 @@
                 <a class="sidebar-button" href="reclamo.html">Siniestros</a>
             </nav>
         </aside>
-
         <main class="main-content">
-            <h1>Gestión de Clientes</h1>
+            <div class="header-acciones">
+                <h1>Gestión de Clientes</h1>
+                <a href="register.html" class="button-create">Crear Cliente</a>
+            </div>
+
+            <div id="form-edicion">
+                <h3>Editar Cliente</h3>
+                <input type="text" id="editNombre" placeholder="Nombre">
+                <input type="text" id="editApellido" placeholder="Apellido">
+                <input type="email" id="editEmail" placeholder="Email">
+                <input type="text" id="editTelefono" placeholder="Teléfono">
+                <input type="text" id="editDireccion" placeholder="Dirección">
+
+                <button onclick="guardarEdicion()">Guardar Cambios</button>
+                <button onclick="cancelarEdicion()">Cancelar</button>
+            </div>
             <table class="data-table">
                 <thead>
                     <tr>
@@ -34,11 +55,100 @@
                         <th>Acciones</th>
                     </tr>
                 </thead>
-                <tbody>
-                </tbody>
+                <tbody id="tbody-clientes"></tbody>
             </table>
         </main>
     </div>
+
+    <script>
+        let dniEditando = null;
+
+        async function cargarClientes() {
+            const response = await fetch('/api/clientes');
+            const clientes = await response.json();
+            const tbody = document.getElementById('tbody-clientes');
+            tbody.innerHTML = '';
+
+            clientes.forEach(c => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                <td>${c.nombre}</td><td>${c.apellido}</td><td>${c.dniCuit}</td>
+                <td>${c.email}</td><td>${c.telefono || ''}</td><td>${c.direccion || ''}</td>
+                <td>
+                <button onclick="prepararEdicion('${c.dniCuit}', '${c.nombre}', '${c.apellido}', '${c.email}', '${c.telefono || ''}', '${c.direccion || ''}')">Editar</button>
+                <button onclick="eliminarCliente('${c.dniCuit}')">Eliminar</button>
+                </td>
+                
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        async function eliminarCliente(id) {
+            if (confirm('¿Seguro que deseas eliminar este cliente?')) {
+                try {
+                    const response = await fetch(`/api/clientes/${id}`, { method: 'DELETE' });
+
+                    if (response.ok) {
+                        alert("Cliente eliminado");
+                        cargarClientes();
+                    } else {
+                        // AQUÍ VEREMOS EL ERROR REAL
+                        const errorMsg = await response.text();
+                        console.error("Detalle del error:", errorMsg);
+                        alert("No se pudo eliminar: " + errorMsg);
+                    }
+                } catch (error) {
+                    console.error("Error de red:", error);
+                }
+            }
+        }
+
+        function prepararEdicion(dni, nombre, apellido, email, telefono, direccion) {
+            dniEditando = dni;
+            document.getElementById('editNombre').value = nombre;
+            document.getElementById('editApellido').value = apellido;
+            document.getElementById('editEmail').value = email;
+            document.getElementById('editTelefono').value = telefono;
+            document.getElementById('editDireccion').value = direccion;
+            document.getElementById('form-edicion').style.display = 'block';
+        }
+
+        async function guardarEdicion() {
+            const data = {
+                nombre: document.getElementById('editNombre').value,
+                apellido: document.getElementById('editApellido').value,
+                email: document.getElementById('editEmail').value,
+                telefono: document.getElementById('editTelefono').value,
+                direccion: document.getElementById('editDireccion').value,
+            };
+
+            console.log("Enviando a:", `/api/clientes/${dniEditando}`);
+            console.log("Datos:", JSON.stringify(data));
+
+            try {
+                const response = await fetch(`/api/clientes/${dniEditando}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                if (response.ok) {
+                    alert("Cliente actualizado correctamente");
+                    cargarClientes();
+                } else {
+                    const err = await response.text();
+                    console.error("Error del servidor:", err);
+                    alert("Error al actualizar: " + err);
+                }
+            } catch (e) {
+                console.error("Error de conexión:", e);
+            }
+        }
+        function cancelarEdicion() { document.getElementById('form-edicion').style.display = 'none'; }
+
+        document.addEventListener('DOMContentLoaded', cargarClientes);
+    </script>
 </body>
 
 </html>

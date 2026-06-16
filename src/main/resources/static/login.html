@@ -11,22 +11,52 @@
 <body>
     <header>
         <div class="logo-name">Seguros Argentum</div>
-        
+
     </header>
 
     <div class="wrapper">
         <div class="login-container">
             <img src="images/SA1.png" alt="Seguros Argentum" class="logo">
-            <form>
-                <input type="text" placeholder="Usuario" required>
-                <input type="password" placeholder="Contraseña" required>
+            <form id="loginForm" onsubmit="event.preventDefault(); iniciarSesion();">
+                <input type="text" name="dniCuit" placeholder="Dni o Cuit" required>
+                <input type="password" name="contraseña" placeholder="Contraseña" required>
                 <button type="submit">Iniciar Sesión</button>
-                <div class="form-footer">
-                    <a href="register.html">Crear Cuenta</a>
-                    <a href="ayuda.html">¿Necesita Ayuda?</a>
-                </div>
+            </form>
+            <div class="form-footer">
+                <a href="register.html">Crear Cuenta</a>
+                <a href="ayuda.html">¿Necesita Ayuda?</a>
+            </div>
             </form>
         </div>
     </div>
+
+    <script>
+        async function iniciarSesion() {
+            const form = document.getElementById('loginForm');
+            const formData = new FormData(form);
+            const credenciales = Object.fromEntries(formData.entries());
+
+            try {
+                const response = await fetch('http://localhost:8085/api/administradores/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(credenciales)
+                });
+
+                if (response.ok) {
+                    // El login fue exitoso
+                    window.location.href = "clientes.html";
+                } else {
+                    const errorMsg = await response.text();
+                    alert("Error: " + errorMsg);
+                }
+            } catch (error) {
+                console.error("Error de conexión:", error);
+                alert("No se pudo conectar al servidor. Asegúrate de que Spring Boot esté corriendo.");
+            }
+        }
+    </script>
+
 </body>
+
 </html>

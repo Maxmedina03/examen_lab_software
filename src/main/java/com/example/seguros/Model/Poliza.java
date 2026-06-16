@@ -4,10 +4,10 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
-
-
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -28,6 +28,15 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "polizas")
 @Inheritance(strategy = InheritanceType.JOINED)
+@JsonTypeInfo(
+  use = JsonTypeInfo.Id.NAME, 
+  include = JsonTypeInfo.As.PROPERTY, 
+  property = "tipoPoliza" // Jackson buscará este campo en el JSON
+)
+@JsonSubTypes({
+  @JsonSubTypes.Type(value = PolizaAutomotor.class, name = "AUTOMOTRIZ"),
+  @JsonSubTypes.Type(value = PolizaHogar.class, name = "HOGAR")
+})
 public abstract class Poliza {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -55,7 +64,7 @@ public abstract class Poliza {
     private Cliente cliente;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "id_poliza")
-    @JsonManagedReference
+   @JsonIgnoreProperties("poliza")
     private List<Reclamo> reclamos;
     @OneToMany(mappedBy = "poliza", cascade = CascadeType.ALL)
     private List<PagoPoliza> pagosPoliza; 

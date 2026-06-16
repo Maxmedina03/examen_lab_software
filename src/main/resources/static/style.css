@@ -56,6 +56,17 @@ input {
     box-sizing: border-box; 
 }
 
+select{
+    width: 100%; 
+    max-width: 350px; 
+    padding: 15px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-sizing: border-box;
+}
+
+
 button {
     padding: 15px;
     border-radius: 25px;
@@ -66,6 +77,30 @@ button {
     font-weight: bold;
 }
 
+.header-acciones {
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;            
+    margin-bottom: 20px;
+}
+
+
+.button-create {
+    display: inline-block;
+    padding: 15px 30px; 
+    font-size: 1.25rem;            
+    background-color: #007bff;    
+    color: white;
+    text-decoration: none;        
+    border-radius: 8px;          
+    font-weight: bold;
+    transition: background 0.3s;
+}
+
+/* Efecto al pasar el mouse */
+.button-create:hover {
+    background-color: #0056b3;
+}
 
 .form-footer {
     margin-top: 20px; 
@@ -102,7 +137,7 @@ button {
     flex-grow: 1;
     padding: 40px;
     background-color: #f4f7f6;
-    overflow-y: auto; /* Permite scroll si hay muchos clientes */
+    overflow-y: auto; 
 }
 
 

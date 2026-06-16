@@ -4,8 +4,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestión de Clientes - Seguros Argentum</title>
+    <title>Gestión de Reclamos - Seguros Argentum</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        #form-edicion {
+            display: none;
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #ccc;
+            background: #f9f9f9;
+        }
+    </style>
 </head>
 
 <body>
@@ -14,14 +23,27 @@
             <h2>Seguros Argentum</h2>
             <nav>
                 <a class="sidebar-button" href="#">Inicio</a>
-                <a class="sidebar-button" href="clientes.html" class="active">Clientes</a>
+                <a class="sidebar-button" href="clientes.html">Clientes</a>
                 <a class="sidebar-button" href="polizas.html">Pólizas</a>
-                <a class="sidebar-button" href="reclamo.html">Siniestros</a>
+                <a class="sidebar-button" href="reclamo.html" class="active">Siniestros</a>
             </nav>
         </aside>
 
         <main class="main-content">
-            <h1>Gestión de Polizas</h1>
+            <h1>Gestión de Reclamos</h1>
+
+            <div id="form-edicion">
+                <h3>Editar Estado de Reclamo</h3>
+                <input type="hidden" id="editIdReclamo">
+                <select id="editEstado">
+                    <option value="PENDIENTE">PENDIENTE</option>
+                    <option value="APROBADO">APROBADO</option>
+                    <option value="RECHAZADO">RECHAZADO</option>
+                </select>
+                <button onclick="guardarEdicion()">Guardar Cambios</button>
+                <button onclick="cancelarEdicion()">Cancelar</button>
+            </div>
+
             <table class="data-table">
                 <thead>
                     <tr>
@@ -33,11 +55,76 @@
                         <th>Acciones</th>
                     </tr>
                 </thead>
-                <tbody>
-                </tbody>
+                <tbody id="tbody-reclamos"></tbody>
             </table>
         </main>
     </div>
-</body>
 
+    <script>
+        let idEditando = null;
+
+        async function cargarReclamos() {
+            const response = await fetch('/api/reclamos');
+            const reclamos = await response.json();
+            const tbody = document.getElementById('tbody-reclamos');
+            tbody.innerHTML = '';
+
+            reclamos.forEach(r => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${r.idReclamo}</td>
+                    <td>${r.fechaSiniestro}</td>
+                    <td>$${r.montoReclamado}</td>
+                    <td>${r.estadoReclamo}</td>
+                    <td>${r.poliza ? r.poliza.numeroPoliza : 'N/A'}</td>
+                    <td>
+                        <button onclick="prepararEdicion(${r.idReclamo}, '${r.estadoReclamo}')">Editar</button>
+                        <button onclick="eliminarReclamo(${r.idReclamo})">Eliminar</button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function prepararEdicion(id, estado) {
+            idEditando = id;
+            document.getElementById('editEstado').value = estado;
+            document.getElementById('form-edicion').style.display = 'block';
+        }
+
+        async function guardarEdicion() {
+            const nuevoEstado = document.getElementById('editEstado').value;
+            
+            // Asumiendo que tu API de reclamos tiene un PUT similar
+            const response = await fetch(`/api/reclamos/${idEditando}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ estadoReclamo: nuevoEstado })
+            });
+
+            if (response.ok) {
+                alert("Estado actualizado correctamente");
+                document.getElementById('form-edicion').style.display = 'none';
+                cargarReclamos();
+            } else {
+                alert("Error al actualizar");
+            }
+        }
+
+        async function eliminarReclamo(id) {
+            if (confirm('¿Seguro que deseas eliminar este reclamo?')) {
+                const response = await fetch(`/api/reclamos/${id}`, { method: 'DELETE' });
+                if (response.ok) {
+                    cargarReclamos();
+                } else {
+                    alert("Error al eliminar");
+                }
+            }
+        }
+
+        function cancelarEdicion() { document.getElementById('form-edicion').style.display = 'none'; }
+
+        document.addEventListener('DOMContentLoaded', cargarReclamos);
+    </script>
+</body>
 </html>

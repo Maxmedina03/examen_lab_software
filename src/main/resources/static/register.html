@@ -16,7 +16,7 @@
     <div class="wrapper">
         <div class="login-container">
             <h2 style="color: #0047AB ;">Crear Cuenta</h2>
-            <form action="/auth/registrar" method="POST">
+            <form id="form-cliente">
                 <input type="text" name="nombre" placeholder="Nombre" required>
                 <input type="text" name="apellido" placeholder="Apellido" required>
                 <input type="text" name="dniCuit" placeholder="DNI o CUIT" required>
@@ -24,7 +24,8 @@
                 <input type="text" name="direccion" placeholder="Dirección" required>
                 <input type="email" name="email" placeholder="Correo electrónico" required>
                 <input type="password" name="contraseña" placeholder="Contraseña" required>
-                <button type="submit">Registrarse</button>
+
+                <button type="button" onclick="guardarCliente()">Registrarse</button>
 
                 <div class="form-footer">
                     <a href="login.html">¿Ya tienes cuenta? Inicia sesión</a>
@@ -32,6 +33,36 @@
             </form>
         </div>
     </div>
+
+    <script>
+
+        async function guardarCliente() {
+            const form = document.getElementById('form-cliente');
+
+            // Creamos el objeto FormData del formulario encontrado
+            const formData = new FormData(form);
+            const cliente = Object.fromEntries(formData.entries());
+
+            try {
+                const response = await fetch('/api/clientes', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify([cliente]) // Tu controlador espera una lista
+                });
+
+                if (response.ok) {
+                    alert("Cliente registrado correctamente");
+                    form.reset(); 
+                    window.location.href = "login.html"
+                } else {
+                    alert("Error al guardar: " + response.statusText);
+                }
+            } catch (error) {
+                console.error("Error de conexión:", error);
+            }
+        }
+    </script>
+
 </body>
 
 </html>

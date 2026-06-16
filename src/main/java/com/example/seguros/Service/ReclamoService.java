@@ -1,16 +1,17 @@
 package com.example.seguros.Service;
 
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.example.seguros.DTO.ReclamoRequest;
 import com.example.seguros.Model.EstadoReclamo;
 import com.example.seguros.Model.Poliza;
 import com.example.seguros.Model.Reclamo;
 import com.example.seguros.Repository.PolizaRepository;
 import com.example.seguros.Repository.ReclamoRepository;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ReclamoService {
@@ -90,4 +91,5 @@ public class ReclamoService {
         }
         return reclamo;
     }
+
 }

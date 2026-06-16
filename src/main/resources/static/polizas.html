@@ -4,8 +4,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestión de Clientes - Seguros Argentum</title>
+    <title>Gestión de Pólizas - Seguros Argentum</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        #form-edicion {
+            display: none;
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #ccc;
+            background: #f9f9f9;
+        }
+    </style>
 </head>
 
 <body>
@@ -14,30 +23,138 @@
             <h2>Seguros Argentum</h2>
             <nav>
                 <a class="sidebar-button" href="#">Inicio</a>
-                <a class="sidebar-button" href="clientes.html" class="active">Clientes</a>
-                <a class="sidebar-button" href="polizas.html">Pólizas</a>
+                <a class="sidebar-button" href="clientes.html">Clientes</a>
+                <a class="sidebar-button" href="polizas.html" class="active">Pólizas</a>
                 <a class="sidebar-button" href="reclamo.html">Siniestros</a>
             </nav>
         </aside>
 
         <main class="main-content">
-            <h1>Gestión de Polizas</h1>
+            <h1>Gestión de Pólizas</h1>
+
+            <div id="form-edicion">
+                <h3>Editar Póliza</h3>
+                <input type="date" id="editFechaInicio" placeholder="Fecha Inicio">
+                <input type="date" id="editFechaFin" placeholder="Fecha Fin">
+                <select id="editEstado">
+                    <option value="ACTIVA">ACTIVA</option>
+                    <option value="VENCIDA">VENCIDA</option>
+                    <option value="CANCELADA">CANCELADA</option>
+                </select>
+                <input type="number" id="editCobertura" placeholder="Cobertura Máx.">
+                <button onclick="guardarEdicion()">Guardar Cambios</button>
+                <button onclick="cancelarEdicion()">Cancelar</button>
+            </div>
+
             <table class="data-table">
                 <thead>
                     <tr>
                         <th>Nro. Póliza</th>
                         <th>Tipo</th>
-                        <th>Detalle</th>
+                        <th>Fecha Inicio</th>
+                        <th>Fecha Fin</th>
                         <th>Estado</th>
                         <th>Cobertura Máx.</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
-                <tbody>
-                </tbody>
+                <tbody id="tbody-polizas"></tbody>
             </table>
         </main>
     </div>
+
+    <script>
+        let idEditando = null;
+        let tipoEditando = ""; // <--- AÑADIDA: variable global para el tipo
+
+        async function cargarPolizas() {
+            const response = await fetch('/api/polizas');
+            const polizas = await response.json();
+            const tbody = document.getElementById('tbody-polizas');
+            tbody.innerHTML = '';
+
+            polizas.forEach(p => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                <td>${p.numeroPoliza}</td>
+                <td>${p.tipoPoliza}</td>
+                <td>${p.fechaInicio}</td>
+                <td>${p.fechaFin}</td>
+                <td>${p.estadoPoliza}</td>
+                <td>$${p.coberturaMaxima}</td>
+                <td>
+                    <button onclick="prepararEdicion(${p.idPoliza}, '${p.tipoPoliza}', '${p.fechaInicio}', '${p.fechaFin}', '${p.estadoPoliza}', ${p.coberturaMaxima})">Editar</button>
+                    <button onclick="eliminarPoliza(${p.idPoliza})">Eliminar</button>
+                </td>
+            `;
+                tbody.appendChild(row);
+            });
+        }
+        // --- NUEVA FUNCIÓN AÑADIDA ---
+        async function eliminarPoliza(id) {
+            if (confirm('¿Seguro que deseas eliminar esta póliza?')) {
+                try {
+                    const response = await fetch(`/api/polizas/${id}`, { method: 'DELETE' });
+                    if (response.ok) {
+                        alert("Póliza eliminada con éxito");
+                        cargarPolizas();
+                    } else {
+                        alert("Error al eliminar: " + await response.text());
+                    }
+                } catch (error) {
+                    console.error("Error de red:", error);
+                }
+            }
+        }
+
+        // AÑADIDO: 'tipo' como parámetro
+        function prepararEdicion(id, tipo, fInicio, fFin, estado, cobertura) {
+            idEditando = id;
+            tipoEditando = tipo;
+            document.getElementById('editFechaInicio').value = fInicio;
+            document.getElementById('editFechaFin').value = fFin;
+
+            // Seleccionar el valor correcto en el combo box
+            document.getElementById('editEstado').value = estado;
+
+            document.getElementById('editCobertura').value = cobertura;
+            document.getElementById('form-edicion').style.display = 'block';
+        }
+        async function guardarEdicion() {
+            const data = {
+                // Este campo debe ser exactamente lo que espera el @JsonTypeInfo de tu backend
+                tipoPoliza: tipoEditando,
+                fechaInicio: document.getElementById('editFechaInicio').value,
+                fechaFin: document.getElementById('editFechaFin').value,
+                estadoPoliza: document.getElementById('editEstado').value,
+                coberturaMaxima: parseFloat(document.getElementById('editCobertura').value)
+            };
+
+            console.log("Enviando JSON:", JSON.stringify(data));
+
+            try {
+                const response = await fetch(`/api/polizas/${idEditando}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                if (response.ok) {
+                    alert("Póliza actualizada correctamente");
+                    document.getElementById('form-edicion').style.display = 'none';
+                    cargarPolizas();
+                } else {
+                    const errorMsg = await response.text();
+                    alert("Error al actualizar: " + errorMsg);
+                }
+            } catch (error) {
+                console.error("Error de red:", error);
+            }
+        }
+
+        function cancelarEdicion() { document.getElementById('form-edicion').style.display = 'none'; }
+        document.addEventListener('DOMContentLoaded', cargarPolizas);
+    </script>
 </body>
 
 </html>
