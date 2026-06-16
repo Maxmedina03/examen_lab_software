@@ -27,9 +27,7 @@
 
                 <button type="button" onclick="guardarCliente()">Registrarse</button>
 
-                <div class="form-footer">
-                    <a href="login.html">¿Ya tienes cuenta? Inicia sesión</a>
-                </div>
+               
             </form>
         </div>
     </div>
@@ -53,7 +51,7 @@
                 if (response.ok) {
                     alert("Cliente registrado correctamente");
                     form.reset(); 
-                    window.location.href = "login.html"
+                    window.location.href = "clientes.html"
                 } else {
                     alert("Error al guardar: " + response.statusText);
                 }
