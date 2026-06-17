@@ -101,10 +101,8 @@ public class PolizaController {
             polizaService.eliminarPoliza(id);
             return ResponseEntity.ok("Póliza eliminada correctamente");
         } catch (IllegalArgumentException e) {
-            // Devuelve un 404 Not Found si la póliza no existe
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         } catch (Exception e) {
-            // Devuelve un 500 en caso de error inesperado (ej: integridad referencial)
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al eliminar la póliza: " + e.getMessage());
         }
     }   
