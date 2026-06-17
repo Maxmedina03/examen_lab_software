@@ -37,7 +37,7 @@
         async function guardarCliente() {
             const form = document.getElementById('form-cliente');
 
-            // Creamos el objeto FormData del formulario encontrado
+            
             const formData = new FormData(form);
             const cliente = Object.fromEntries(formData.entries());
 
@@ -45,7 +45,7 @@
                 const response = await fetch('/api/clientes', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify([cliente]) // Tu controlador espera una lista
+                    body: JSON.stringify([cliente]) 
                 });
 
                 if (response.ok) {

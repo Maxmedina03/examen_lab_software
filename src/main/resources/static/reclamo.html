@@ -95,7 +95,7 @@
         async function guardarEdicion() {
             const nuevoEstado = document.getElementById('editEstado').value;
             
-            // Asumiendo que tu API de reclamos tiene un PUT similar
+            
             const response = await fetch(`/api/reclamos/${idEditando}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },

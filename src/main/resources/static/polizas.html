@@ -6,15 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestión de Pólizas - Seguros Argentum</title>
     <link rel="stylesheet" href="style.css">
-    <style>
-        #form-edicion {
-            display: none;
-            margin-bottom: 20px;
-            padding: 15px;
-            border: 1px solid #ccc;
-            background: #f9f9f9;
-        }
-    </style>
 </head>
 
 <body>
@@ -65,8 +56,7 @@
 
     <script>
         let idEditando = null;
-        let tipoEditando = ""; // <--- AÑADIDA: variable global para el tipo
-
+        let tipoEditando = ""; // 
         async function cargarPolizas() {
             const response = await fetch('/api/polizas');
             const polizas = await response.json();
@@ -90,7 +80,7 @@
                 tbody.appendChild(row);
             });
         }
-        // --- NUEVA FUNCIÓN AÑADIDA ---
+      
         async function eliminarPoliza(id) {
             if (confirm('¿Seguro que deseas eliminar esta póliza?')) {
                 try {
@@ -107,7 +97,7 @@
             }
         }
 
-        // AÑADIDO: 'tipo' como parámetro
+      
         function prepararEdicion(id, tipo, fInicio, fFin, estado, cobertura) {
             idEditando = id;
             tipoEditando = tipo;
@@ -122,7 +112,7 @@
         }
         async function guardarEdicion() {
             const data = {
-                // Este campo debe ser exactamente lo que espera el @JsonTypeInfo de tu backend
+               
                 tipoPoliza: tipoEditando,
                 fechaInicio: document.getElementById('editFechaInicio').value,
                 fechaFin: document.getElementById('editFechaFin').value,
